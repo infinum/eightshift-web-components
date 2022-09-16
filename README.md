@@ -1,48 +1,89 @@
-# Svelte + Vite
+# Conditional logic repeater
 
-This template should help get you started developing with Svelte in Vite.
+A simple web component that allows adding multiple rules for conditionally rendering form fields.
 
-## Recommended IDE Setup
+## Usage
 
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode).
+1. Import/enqueue the web component `.js` file
+2. Use it in your markup:
 
-## Need an official Svelte framework?
-
-Check out [SvelteKit](https://github.com/sveltejs/kit#readme), which is also powered by Vite. Deploy anywhere with its serverless-first approach and adapt to various platforms, with out of the box support for TypeScript, SCSS, and Less, and easily-added support for mdsvex, GraphQL, PostCSS, Tailwind CSS, and more.
-
-## Technical considerations
-
-**Why use this over SvelteKit?**
-
-- It brings its own routing solution which might not be preferable for some users.
-- It is first and foremost a framework that just happens to use Vite under the hood, not a Vite app.
-  `vite dev` and `vite build` wouldn't work in a SvelteKit environment, for example.
-
-This template contains as little as possible to get started with Vite + Svelte, while taking into account the developer experience with regards to HMR and intellisense. It demonstrates capabilities on par with the other `create-vite` templates and is a good starting point for beginners dipping their toes into a Vite + Svelte project.
-
-Should you later need the extended capabilities and extensibility provided by SvelteKit, the template has been structured similarly to SvelteKit so that it is easy to migrate.
-
-**Why `global.d.ts` instead of `compilerOptions.types` inside `jsconfig.json` or `tsconfig.json`?**
-
-Setting `compilerOptions.types` shuts out all other types not explicitly listed in the configuration. Using triple-slash references keeps the default TypeScript setting of accepting type information from the entire workspace, while also adding `svelte` and `vite/client` type information.
-
-**Why include `.vscode/extensions.json`?**
-
-Other templates indirectly recommend extensions via the README, but this file allows VS Code to prompt the user to install the recommended extension upon opening the project.
-
-**Why enable `checkJs` in the JS template?**
-
-It is likely that most cases of changing variable types in runtime are likely to be accidental, rather than deliberate. This provides advanced typechecking out of the box. Should you like to take advantage of the dynamically-typed nature of JavaScript, it is trivial to change the configuration.
-
-**Why is HMR not preserving my local component state?**
-
-HMR state preservation comes with a number of gotchas! It has been disabled by default in both `svelte-hmr` and `@sveltejs/vite-plugin-svelte` due to its often surprising behavior. You can read the details [here](https://github.com/rixo/svelte-hmr#svelte-hmr).
-
-If you have state that's important to retain within a component, consider creating an external store which would not be replaced by HMR.
-
-```js
-// store.js
-// An extremely simple external store
-import { writable } from 'svelte/store'
-export default writable(0)
+```html
+<conditional-logic-repeater fields='[{"label":"Name","value":"name"},{"label":"E-mail","value":"email"},{"label":"Date of birth","value":"dob"}]'></conditional-logic-repeater>
 ```
+
+### Settable props
+
+- **`fields`** - fields that are shown in the dropdown menu, should be provided as a JSON string (array of objects with label & value keys)
+- **`hasUseToggle`** - if provided, enables the *Use conditional logic* toggle
+
+### Gettable props
+
+- **`conditions`** - all the conditions the user has set,
+  in the format of
+  ```js
+  [
+    { field: "", comparison: "is", value: "" },
+    { field: "", comparison: "is", value: "" },
+	...
+  ]
+  ```
+  where `field` is the `value` of the chosen field (from the list of `fields`), `comparison` is the compare type, and `value` the entered value
+- **`behavior`** - `show` or `hide`, depending on the user's choice
+- **`logic`** - `and` (*all*) or `or` (*any*), depending on the user's choice
+
+Props can be fetched just as with any other HTML element, e.g.
+```js
+const repeaterElement = document.querySelector('.demo-repeater');
+
+if (repeaterElement.enabled) {
+	console.log({
+		enabled: repeaterElement.enabled,
+		behavior: repeaterElement.behavior,
+		logic: repeaterElement.logic,
+		conditions: repeaterElement.conditions,
+	});
+} else {
+	console.log('Repeater is disabled');
+}
+```
+## Setup
+
+1. Clone
+2. `npm install`
+
+### Dev build
+Run `npm run dev` in your terminal.
+
+You will get a link in your terminal which you can open. A live server starts up and updates as you develop.
+
+### Production build
+Run `npm run build` in your terminal.
+
+The compiled component will be in `dist/assets`, with a randomly generated filename.
+
+## File & folder structure
+
+- `dist`: _output folder_ (auto-generated on production builds)
+- `src`: _source code_
+  - `Repeater.svelte`: _the conditional-logic-repeater web component_
+  - `main.js`: _supporting file for preparing the export of the web component_
+- `index.html`: _Sample/demo page_
+- other JSON/config files: _not important_
+
+## How it works
+
+Svelte has an option to export web components.
+
+`Repeater.svelte` contains all the logic and styles for the component.
+
+All the `export let` properties will be publicly accessible using JS when the exported component is used.
+
+The `<svelte:options tag='conditional-logic-repeater' />` defines the custom element tag name.
+
+For more info about the rest of Svelte logic and how it works, visit [the Svelte docs](https://svelte.dev/docs).
+
+
+### Why Svelte?
+Usually web components are pretty cumbersome to build, requiring a lot of code for not much work, all the fiddling with HTML templates, etc.
+
+Svelte makes it all easier with its simple, yet powerful syntax.
