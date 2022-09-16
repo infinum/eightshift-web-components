@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<link rel="icon" type="image/svg+xml" href="/vite.svg" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Vite + Svelte</title>
+</head>
+
+<body>
+	<conditional-logic-repeater class="demo-repeater" fields='checkbox:Checkbox,name:Name,demo:Demo'></conditional-logic-repeater>
+
+	<hr />
+
+	<button id="trigger">Get data</button>
+
+	<script type="module" src="/src/main.js"></script>
+
+	<script>
+		const button = document.querySelector('#trigger');
+
+		button.addEventListener('click', () => {
+			const repeaterElement = document.querySelector('.demo-repeater');
+
+			if (repeaterElement.enabled) {
+				console.log({
+					enabled: repeaterElement.enabled,
+					behavior: repeaterElement.behavior,
+					logic: repeaterElement.logic,
+					conditions: repeaterElement.conditions,
+				});
+			} else {
+				console.log('Repeater is disabled');
+			}
+		});
+	</script>
+</body>
+
+</html>
