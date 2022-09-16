@@ -1,31 +1,30 @@
 <script>
 	export let enabled = true;
-	export let behavior = 'show';
-	export let logic = 'and';
-	export let conditions = [{ field: '', comparison: 'is', value: '' }];
-	export let fields = '';
+	export let behavior = "show";
+	export let logic = "and";
+	export let conditions = [{ field: "", comparison: "is", value: "" }];
+	export let fields;
+	export let hasUseToggle = false;
 
-	const splitFields = fields.split(',').map((entry) => {
-		const split = entry.split(':');
+	// Convert the "id:label,id:label,..." input into actual objects.
+	const splitFields = fields?.length > 0 ? JSON.parse(fields) : '';
 
-		return {
-			label: split[1],
-			value: split[0],
-		};
-	});
-
+	// Add new item.
 	const addCondition = () => {
+		// Needs to be a = assignment to trigger a UI update in Svelte.
 		conditions = [
 			...conditions,
 			{
-				field: '',
-				comparison: 'is',
-				value: '',
+				field: "",
+				comparison: "is",
+				value: "",
 			},
 		];
 	};
 
+	// Remove an item.
 	const removeCondition = (i) => {
+		// Needs to be a = assignment to trigger a UI update in Svelte.
 		conditions = conditions.filter((_, index) => index !== i);
 	};
 </script>
@@ -33,21 +32,23 @@
 <svelte:options tag='conditional-logic-repeater' />
 
 <div class="conditional-logic-repeater">
-	<label>
-		<input type='checkbox' bind:checked={enabled} />
-		Use conditional logic
-	</label>
+	{#if hasUseToggle}
+		<label>
+			<input type="checkbox" bind:checked={enabled} />
+			Use conditional logic
+		</label>
+	{/if}
 
-	{#if enabled}
+	{#if enabled || !hasUseToggle}
 		<div class="conditional-logic-repeater__item">
 			<select bind:value={behavior}>
-				<option value='show'>Show</option>
-				<option value='hide'>Hide</option>
+				<option value="show">Show</option>
+				<option value="hide">Hide</option>
 			</select>
 			this field if
 			<select bind:value={logic}>
-				<option value='and'>all</option>
-				<option value='or'>any</option>
+				<option value="and">all</option>
+				<option value="or">any</option>
 			</select>
 			of the following match:
 		</div>
@@ -55,33 +56,57 @@
 		{#each conditions as condition, i (i)}
 			<div class="conditional-logic-repeater__item">
 				<select bind:value={condition.field}>
-					{#each splitFields as item, j (j)}
-						<option value={item.value}>{item.label}</option>
-					{/each}
+					{#if fields?.length > 0}
+						{#each splitFields as item, j (j)}
+							<option value={item.value}>{item.label}</option>
+						{/each}
+					{/if}
 				</select>
 
 				<select bind:value={condition.comparison}>
-					<option value='is'>is</option>
-					<option value='isnot'>is not</option>
-					<option value='gt'>greater than</option>
-					<option value='lt'>less than</option>
-					<option value='contains'>contains</option>
-					<option value='startsWith'>starts with</option>
-					<option value='endsWith'>ends with</option>
+					<option value="is">is</option>
+					<option value="isnot">is not</option>
+					<option value="gt">greater than</option>
+					<option value="lt">less than</option>
+					<option value="contains">contains</option>
+					<option value="startsWith">starts with</option>
+					<option value="endsWith">ends with</option>
 				</select>
 
-				<input type='text' bind:value={condition.value} />
+				<input type="text" bind:value={condition.value} />
 
 				<button on:click={addCondition}>
-					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<path d="M1 10H10M19 10H10M10 10V1M10 10V19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+					<svg
+						width="20"
+						height="20"
+						viewBox="0 0 20 20"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<path
+							d="M1 10H10M19 10H10M10 10V1M10 10V19"
+							stroke="currentColor"
+							stroke-width="1.5"
+							stroke-linecap="round"
+						/>
 					</svg>
 				</button>
 
 				{#if i > 0}
 					<button on:click={() => removeCondition(i)}>
-						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M1 10H19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+						<svg
+							width="20"
+							height="20"
+							viewBox="0 0 20 20"
+							fill="none"
+							xmlns="http://www.w3.org/2000/svg"
+						>
+							<path
+								d="M1 10H19"
+								stroke="currentColor"
+								stroke-width="1.5"
+								stroke-linecap="round"
+							/>
 						</svg>
 					</button>
 				{/if}
@@ -93,8 +118,14 @@
 <style>
 	.conditional-logic-repeater {
 		--rptr-font-family: system-ui, sans-serif;
-		--rptr-accent-color: var(--es-conditional-logic-repeater-accent, #29A3A3);
-		--rptr-input-border-color: var(--es-conditional-logic-repeater-input-border, #8F9C9C);
+		--rptr-accent-color: var(
+			--es-conditional-logic-repeater-accent,
+			#29a3a3
+		);
+		--rptr-input-border-color: var(
+			--es-conditional-logic-repeater-input-border,
+			#8f9c9c
+		);
 		--rptr-font-size: var(--es-conditional-logic-repeater-accent, 0.9em);
 
 		font-family: system-ui, sans-serif;
@@ -136,13 +167,13 @@
 		height: 1rem;
 	}
 
-	input[type=checkbox] {
+	input[type="checkbox"] {
 		width: 1.25rem;
 		height: 1.25rem;
 		accent-color: var(--rptr-accent-color);
 	}
 
-	input[type=text],
+	input[type="text"],
 	select {
 		height: 2.5rem;
 		border-radius: 0.25rem;

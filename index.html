@@ -3,15 +3,14 @@
 
 <head>
 	<meta charset="UTF-8" />
-	<link rel="icon" type="image/svg+xml" href="/vite.svg" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Vite + Svelte</title>
+	<title>Conditional logic repeater</title>
 </head>
 
 <body>
-	<conditional-logic-repeater class="demo-repeater" fields='checkbox:Checkbox,name:Name,demo:Demo'></conditional-logic-repeater>
+	<h1>Conditional logic repeater demo</h1>
 
-	<hr />
+	<conditional-logic-repeater class="demo-repeater" fields='[{"label":"Name","value":"name"},{"label":"E-mail","value":"email"},{"label":"Date of birth","value":"dob"}]'></conditional-logic-repeater>
 
 	<button id="trigger">Get data</button>
 
@@ -35,6 +34,16 @@
 			}
 		});
 	</script>
+
+	<style>
+		body {
+			font-family: system-ui, sans-serif;
+		}
+
+		button {
+			margin-top: 2rem;
+		}
+	</style>
 </body>
 
 </html>

@@ -1,1 +1,1 @@
-export * from './lib/Repeater.svelte';
+export * from './Repeater.svelte';
