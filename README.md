@@ -1,3 +1,5 @@
+![Screenshot of the component](./screenshot.png)
+
 # Conditional logic repeater
 
 A simple web component that allows adding multiple rules for conditionally rendering form fields.
