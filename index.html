@@ -18,9 +18,9 @@
 
 	<script>
 		const button = document.querySelector('#trigger');
+		const repeaterElement = document.querySelector('.demo-repeater');
 
 		button.addEventListener('click', () => {
-			const repeaterElement = document.querySelector('.demo-repeater');
 
 			if (repeaterElement.enabled) {
 				console.log({
@@ -32,6 +32,10 @@
 			} else {
 				console.log('Repeater is disabled');
 			}
+		});
+
+		repeaterElement.addEventListener('es-conditional-logic-repeater-update', (e) => {
+			console.log(e.detail);
 		});
 	</script>
 
