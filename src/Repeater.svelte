@@ -4,7 +4,11 @@
 	export let logic = "and";
 	export let conditions = [{ field: "", comparison: "is", value: "" }];
 	export let fields;
-	export let hasUseToggle = false;
+	export let toggleable;
+
+	let elementRef;
+
+	const showToggle = typeof toggleable !== 'undefined';
 
 	// Convert the "id:label,id:label,..." input into actual objects.
 	const splitFields = fields?.length > 0 ? JSON.parse(fields) : '';
@@ -26,27 +30,43 @@
 	const removeCondition = (i) => {
 		// Needs to be a = assignment to trigger a UI update in Svelte.
 		conditions = conditions.filter((_, index) => index !== i);
+
+		triggerUpdateCustomEvent();
+	};
+
+	const triggerUpdateCustomEvent = () => {
+		elementRef.dispatchEvent(
+			new CustomEvent('es-conditional-logic-repeater-update', {
+				detail: {
+					enabled,
+					behavior,
+					logic,
+					conditions,
+				},
+				composed: true,
+			})
+		);
 	};
 </script>
 
 <svelte:options tag='conditional-logic-repeater' />
 
-<div class="conditional-logic-repeater">
-	{#if hasUseToggle}
+<div class="conditional-logic-repeater" bind:this={elementRef}>
+	{#if showToggle}
 		<label>
 			<input type="checkbox" bind:checked={enabled} />
 			Use conditional logic
 		</label>
 	{/if}
 
-	{#if enabled || !hasUseToggle}
+	{#if enabled || !showToggle}
 		<div class="conditional-logic-repeater__item">
-			<select bind:value={behavior}>
+			<select bind:value={behavior} on:change={triggerUpdateCustomEvent}>
 				<option value="show">Show</option>
 				<option value="hide">Hide</option>
 			</select>
 			this field if
-			<select bind:value={logic}>
+			<select bind:value={logic} on:change={triggerUpdateCustomEvent}>
 				<option value="and">all</option>
 				<option value="or">any</option>
 			</select>
@@ -55,7 +75,7 @@
 
 		{#each conditions as condition, i (i)}
 			<div class="conditional-logic-repeater__item">
-				<select bind:value={condition.field}>
+				<select bind:value={condition.field} on:change={triggerUpdateCustomEvent}>
 					{#if fields?.length > 0}
 						{#each splitFields as item, j (j)}
 							<option value={item.value}>{item.label}</option>
@@ -63,7 +83,7 @@
 					{/if}
 				</select>
 
-				<select bind:value={condition.comparison}>
+				<select bind:value={condition.comparison} on:change={triggerUpdateCustomEvent}>
 					<option value="is">is</option>
 					<option value="isnot">is not</option>
 					<option value="gt">greater than</option>
@@ -73,7 +93,7 @@
 					<option value="endsWith">ends with</option>
 				</select>
 
-				<input type="text" bind:value={condition.value} />
+				<input type="text" bind:value={condition.value} on:change={triggerUpdateCustomEvent} />
 
 				<button on:click={addCondition}>
 					<svg
