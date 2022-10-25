@@ -24,13 +24,12 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: dist/conditional-logic-repeater.js
+          asset_name: conditional-logic-repeater.js
+          tag: ${{ github.ref }}
+          overwrite: true
+          body: "This is my release text"
