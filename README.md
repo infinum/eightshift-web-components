@@ -16,7 +16,7 @@ A simple web component that allows adding multiple rules for conditionally rende
 ### Settable props
 
 - **`fields`** - fields that are shown in the dropdown menu, should be provided as a JSON string (array of objects with label & value keys)
-- **`hasUseToggle`** - if provided, enables the *Use conditional logic* toggle
+- **`toggleable`** - if provided, enables the *Use conditional logic* toggle
 
 ### Gettable props
 
@@ -48,6 +48,35 @@ if (repeaterElement.enabled) {
 	console.log('Repeater is disabled');
 }
 ```
+
+### Events
+You can listen to changes to the repeater fields by hooking into the `es-conditional-logic-repeater-update` event.
+
+Example:
+```js
+const repeaterElement = document.querySelector('.demo-repeater');
+
+repeaterElement.addEventListener('es-conditional-logic-repeater-update', (e) => {
+	console.log(e.detail);
+});
+```
+
+Sample output:
+```json
+{
+    "enabled": true,
+    "behavior": "hide",
+    "logic": "or",
+    "conditions": [
+        {
+            "field": "demo",
+            "comparison": "gt",
+            "value": "20"
+        }
+    ]
+}
+```
+
 ## Setup
 
 1. Clone
