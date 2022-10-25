@@ -51,22 +51,22 @@
 
 <svelte:options tag='conditional-logic-repeater' />
 
-<div class="conditional-logic-repeater" bind:this={elementRef}>
+<div class="conditional-logic-repeater" bind:this={elementRef} part="container">
 	{#if showToggle}
-		<label>
-			<input type="checkbox" bind:checked={enabled} />
+		<label part="use-toggle-label">
+			<input type="checkbox" bind:checked={enabled} part="use-toggle-checkbox {enabled ? 'use-toggle-checkbox-enabled' : ''}" />
 			Use conditional logic
 		</label>
 	{/if}
 
 	{#if enabled || !showToggle}
-		<div class="conditional-logic-repeater__item">
-			<select bind:value={behavior} on:change={triggerUpdateCustomEvent}>
+		<div class="conditional-logic-repeater__item" part="header">
+			<select bind:value={behavior} on:change={triggerUpdateCustomEvent} part="header-behavior-select">
 				<option value="show">Show</option>
 				<option value="hide">Hide</option>
 			</select>
 			this field if
-			<select bind:value={logic} on:change={triggerUpdateCustomEvent}>
+			<select bind:value={logic} on:change={triggerUpdateCustomEvent} part="header-logic-select">
 				<option value="and">all</option>
 				<option value="or">any</option>
 			</select>
@@ -74,8 +74,8 @@
 		</div>
 
 		{#each conditions as condition, i (i)}
-			<div class="conditional-logic-repeater__item">
-				<select bind:value={condition.field} on:change={triggerUpdateCustomEvent}>
+			<div class="conditional-logic-repeater__item" part="item">
+				<select bind:value={condition.field} on:change={triggerUpdateCustomEvent} part="item-field-select">
 					{#if fields?.length > 0}
 						{#each splitFields as item, j (j)}
 							<option value={item.value}>{item.label}</option>
@@ -83,7 +83,7 @@
 					{/if}
 				</select>
 
-				<select bind:value={condition.comparison} on:change={triggerUpdateCustomEvent}>
+				<select bind:value={condition.comparison} on:change={triggerUpdateCustomEvent} part="item-comparison-select">
 					<option value="is">is</option>
 					<option value="isnot">is not</option>
 					<option value="gt">greater than</option>
@@ -93,9 +93,9 @@
 					<option value="endsWith">ends with</option>
 				</select>
 
-				<input type="text" bind:value={condition.value} on:change={triggerUpdateCustomEvent} />
+				<input type="text" bind:value={condition.value} on:change={triggerUpdateCustomEvent} part="item-value-input" />
 
-				<button on:click={addCondition}>
+				<button on:click={addCondition} part="add-condition-button">
 					<svg
 						width="20"
 						height="20"
@@ -113,7 +113,7 @@
 				</button>
 
 				{#if i > 0}
-					<button on:click={() => removeCondition(i)}>
+					<button on:click={() => removeCondition(i)} part="remove-condition-button">
 						<svg
 							width="20"
 							height="20"
@@ -146,7 +146,7 @@
 			--es-conditional-logic-repeater-input-border,
 			#8f9c9c
 		);
-		--rptr-font-size: var(--es-conditional-logic-repeater-accent, 0.9em);
+		--rptr-font-size: var(--es-conditional-logic-repeater-font-size, 0.9em);
 
 		font-family: system-ui, sans-serif;
 		font-size: var(--rptr-font-size);
