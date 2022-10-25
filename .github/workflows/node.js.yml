@@ -6,7 +6,7 @@ name: Build
 on:
   push:
     tags:
-      - "*"
+      - "v*"
 
 jobs:
   build:
@@ -14,14 +14,23 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Node v16
+        uses: actions/setup-node@v1
         with:
           version: 16.x
-      - run: npm ci
-      - run: npm run build
-      - name: Create release
-        uses: ncipollo/release-action@v1
+      - name: Install NPM packages
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          artifacts: "dist/conditional-logic-repeater.js"
-          bodyFile: "body.md"
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
