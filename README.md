@@ -13,6 +13,8 @@ A simple web component that allows adding multiple rules for conditionally rende
 <conditional-logic-repeater fields='[{"label":"Name","value":"name"},{"label":"E-mail","value":"email"},{"label":"Date of birth","value":"dob"}]'></conditional-logic-repeater>
 ```
 
+You can also provide a `class`, `id` or other `data-` attributes, just as with other HTML elements.
+
 ### Settable props
 
 - **`fields`** - fields that are shown in the dropdown menu, should be provided as a JSON string (array of objects with label & value keys)
