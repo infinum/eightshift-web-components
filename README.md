@@ -77,6 +77,43 @@ Sample output:
 }
 ```
 
+### Parts & styling
+If you want to change any part of the component visually, you can tweak stuff with CSS variables and Shadow DOM parts.
+
+- `container` - main container of the whole element
+- `use-toggle-label` - `<label>` for the _Use conditional logic_ toggle
+- `use-toggle-checkbox` - checkbox element of the use toggle (you can also target the on state with `use-toggle-checkbox-enabled`)
+
+- `header` - container of the top options ("_Show this field if all of the following match:_")
+- `header-behavior-select` - `<select>` element for show/hide
+- `header-logic-select` - `<select>` element for all/any
+
+- `item` - single entry
+- `item-field-select` - `<select>` element for the field
+- `item-comparison-select` - `<select>` element for the comparison type
+- `item-value-input` - `<input>` element for the value
+
+- `add-condition-button` - the _Add condition_ (+) button
+- `remove-condition-button` - the _Remove condition_ (-) button
+
+Example of using parts:
+```scss
+// All repeaters
+conditional-logic-repeater::part(header) {
+	color: #FF0000;
+}
+
+// Specific repeater
+.my-repeater::part(item) {
+	border: 1px solid #FF00FF;
+}
+```
+
+CSS variables used:
+- `--es-conditional-logic-repeater-accent` - checkbox accent color
+- `--es-conditional-logic-repeater-input-border` - text input fields and `<select>`s border colors
+- `--es-conditional-logic-repeater-font-size` - font size for the component
+
 ## Setup
 
 1. Clone
