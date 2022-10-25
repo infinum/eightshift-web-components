@@ -25,4 +25,3 @@ jobs:
         with:
           artifacts: "dist/conditional-logic-repeater.js"
           bodyFile: "body.md"
-          token: ${{ secrets.YOUR_GITHUB_TOKEN }}
