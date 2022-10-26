@@ -10,9 +10,23 @@
 <body>
 	<h1>Conditional logic repeater demo</h1>
 
+	<h2>Default repeater</h2>
+
 	<conditional-logic-repeater class="demo-repeater" fields='[{"label":"Name","value":"name"},{"label":"E-mail","value":"email"},{"label":"Date of birth","value":"dob"}]'></conditional-logic-repeater>
 
 	<button id="trigger">Get data</button>
+
+	<h2>Toggleable repeater</h2>
+
+	<conditional-logic-repeater toggleable fields='[{"label":"Name","value":"name"},{"label":"E-mail","value":"email"},{"label":"Date of birth","value":"dob"}]'></conditional-logic-repeater>
+
+	<h2>Toggleable repeater with auto-clear</h2>
+
+	<conditional-logic-repeater toggleable autoclear fields='[{"label":"Name","value":"name"},{"label":"E-mail","value":"email"},{"label":"Date of birth","value":"dob"}]'></conditional-logic-repeater>
+
+	<h2>Repeater with default value set</h2>
+
+	<conditional-logic-repeater value='{"enabled":true,"behavior":"show","logic":"and","conditions":[{"field":"email","comparison":"isnot","value":"test@email.com"}]}' fields='[{"label":"Name","value":"name"},{"label":"E-mail","value":"email"},{"label":"Date of birth","value":"dob"}]'></conditional-logic-repeater>
 
 	<script type="module" src="/src/main.js"></script>
 
@@ -36,6 +50,7 @@
 
 		repeaterElement.addEventListener('es-conditional-logic-repeater-update', (e) => {
 			console.log(e.detail);
+			console.log(JSON.stringify(e.detail));
 		});
 	</script>
 
@@ -46,6 +61,11 @@
 
 		button {
 			margin-top: 2rem;
+		}
+
+		h2 {
+			margin-top: 2rem;
+			font-weight: 500;
 		}
 	</style>
 </body>
