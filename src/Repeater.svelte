@@ -6,10 +6,13 @@
 	export let fields;
 	export let toggleable = null;
 	export let value = null;
+	export let autoclear = null;
 
 	let elementRef;
 
 	const showToggle = typeof toggleable !== 'undefined' && toggleable !== null;
+
+	const doAutoClear = showToggle && typeof autoclear !== 'undefined' && autoclear !== null;
 
 	// Parse the field data from JSON string.
 	const parsedFields = fields?.length > 0 ? JSON.parse(fields) : '';
@@ -65,6 +68,14 @@
 		logic = newLogic;
 		conditions = newConditions;
 	}
+
+	const autoClearIfNeeded = () => {
+		if (doAutoClear && !enabled) {
+			conditions = [{ field: "", comparison: "is", value: "" }];
+			behavior = "show";
+			logic = "and";
+		}
+	};
 </script>
 
 <svelte:options tag='conditional-logic-repeater' />
@@ -72,7 +83,7 @@
 <div class="conditional-logic-repeater" bind:this={elementRef} part="container">
 	{#if showToggle}
 		<label part="use-toggle-label">
-			<input type="checkbox" bind:checked={enabled} part="use-toggle-checkbox {enabled ? 'use-toggle-checkbox-enabled' : ''}" />
+			<input type="checkbox" bind:checked={enabled} on:change={autoClearIfNeeded} part="use-toggle-checkbox {enabled ? 'use-toggle-checkbox-enabled' : ''}" />
 			Use conditional logic
 		</label>
 	{/if}
