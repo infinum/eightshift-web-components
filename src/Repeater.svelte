@@ -25,7 +25,7 @@
 	};
 
 	// Parse the field data from JSON string.
-	const parsedFields = fields?.length > 0 ? JSON.parse(fields) : '';
+	const parsedFields = fields?.length > 0 && isJsonString(fields) ? JSON.parse(fields) : '';
 
 	// Add new item.
 	const addCondition = () => {
