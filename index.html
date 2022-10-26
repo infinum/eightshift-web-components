@@ -12,7 +12,7 @@
 
 	<h2>Default repeater</h2>
 
-	<conditional-logic-repeater class="demo-repeater" fields='[{"label":"Name","value":"name"},{"label":"E-mail","value":"email"},{"label":"Date of birth","value":"dob"}]'></conditional-logic-repeater>
+	<conditional-logic-repeater class="demo-repeater" fields='[{"label":"Rich text-0","value":"rich-text-0"},{"label":"First name","value":"firstname"},{"label":"Last name","value":"lastname"},{"label":"Email","value":"email"},{"label":"Phone","value":"mobilephone"},{"label":"Rich text-4","value":"rich-text-4"},{"label":"What do you want to achieve?","value":"hs_persona"},{"label":"What services do you need?","value":"scope_of_services"},{"label":"What is your budget?","value":"rfq_project_budget"},{"label":"Tell us about your project","value":"project_about"},{"label":"Attach any files you feel would be useful test","value":"rfq_attachment"},{"label":"accepted_newsletter_subscription","value":"accepted_newsletter_subscription"},{"label":"utm_campaign","value":"utm_campaign"},{"label":"Label","value":"utm_content"},{"label":"Utm Source","value":"utm_source"}]'></conditional-logic-repeater>
 
 	<button id="trigger">Get data</button>
 
@@ -32,10 +32,10 @@
 
 	<script>
 		const button = document.querySelector('#trigger');
-		const repeaterElement = document.querySelector('.demo-repeater');
+		const repeaterElement = document.querySelector('conditional-logic-repeater');
+		const repeaterElements = document.querySelectorAll('conditional-logic-repeater');
 
 		button.addEventListener('click', () => {
-
 			if (repeaterElement.enabled) {
 				console.log({
 					enabled: repeaterElement.enabled,
@@ -48,9 +48,16 @@
 			}
 		});
 
-		repeaterElement.addEventListener('es-conditional-logic-repeater-update', (e) => {
-			console.log(e.detail);
-			console.log(JSON.stringify(e.detail));
+		repeaterElements.forEach((el) => {
+			el.addEventListener('es-conditional-logic-repeater-update', (e) => {
+				const prevSibling = el?.previousElementSibling;
+
+				if (prevSibling && prevSibling.tagName.toLowerCase() === 'h2') {
+					console.log(prevSibling.innerHTML);
+				}
+
+				console.log(e.detail);
+			});
 		});
 	</script>
 
