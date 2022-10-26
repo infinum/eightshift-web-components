@@ -39,8 +39,7 @@
 	};
 
 	const triggerUpdateCustomEvent = () => {
-		elementRef.dispatchEvent(
-			new CustomEvent('es-conditional-logic-repeater-update', {
+		const data = {
 				detail: {
 					enabled,
 					behavior,
@@ -48,25 +47,28 @@
 					conditions,
 				},
 				composed: true,
-			})
-		);
+		};
+
+		elementRef.dispatchEvent(new CustomEvent('es-conditional-logic-repeater-update', data));
 	};
 
-	// Fill in initial data if provided.
+	// Fill in initial data if provided and in correct format.
 	if (typeof value !== 'undefined' && value !== null) {
 		const parsed = JSON.parse(value);
 
-		const {
-			enabled: newEnabled,
-			behavior: newBehavior,
-			logic: newLogic,
-			conditions: newConditions,
-		} = parsed;
+		if (!Array.isArray(parsed) && Object.keys(parsed)?.length === 4) {
+			const {
+				enabled: newEnabled,
+				behavior: newBehavior,
+				logic: newLogic,
+				conditions: newConditions,
+			} = parsed;
 
-		enabled = newEnabled;
-		behavior = newBehavior;
-		logic = newLogic;
-		conditions = newConditions;
+			enabled = newEnabled;
+			behavior = newBehavior;
+			logic = newLogic;
+			conditions = newConditions;
+		}
 	}
 
 	const onEnabledChange = () => {
