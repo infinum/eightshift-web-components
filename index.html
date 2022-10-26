@@ -28,6 +28,18 @@
 
 	<conditional-logic-repeater value='{"enabled":true,"behavior":"show","logic":"and","conditions":[{"field":"email","comparison":"isnot","value":"test@email.com"}]}' fields='[{"label":"Name","value":"name"},{"label":"E-mail","value":"email"},{"label":"Date of birth","value":"dob"}]'></conditional-logic-repeater>
 
+	<h2>Repeater with custom behaviors</h2>
+
+	<conditional-logic-repeater behaviors='{"demo":"Demonstrate","show":"Show","hide":"Hide"}' fields='[{"label":"Name","value":"name"},{"label":"E-mail","value":"email"},{"label":"Date of birth","value":"dob"}]'></conditional-logic-repeater>
+
+	<h2>Repeater with custom logic options</h2>
+
+	<conditional-logic-repeater logics='{"some":"some","all":"all","any":"any"}' fields='[{"label":"Name","value":"name"},{"label":"E-mail","value":"email"},{"label":"Date of birth","value":"dob"}]'></conditional-logic-repeater>
+
+	<h2>Repeater with custom comparison options</h2>
+
+	<conditional-logic-repeater comparisons='{"matches":"matches","nomatch":"does not match"}' fields='[{"label":"Name","value":"name"},{"label":"E-mail","value":"email"},{"label":"Date of birth","value":"dob"}]'></conditional-logic-repeater>
+
 	<script type="module" src="/src/main.js"></script>
 
 	<script>
