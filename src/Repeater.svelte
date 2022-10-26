@@ -4,14 +4,15 @@
 	export let logic = "and";
 	export let conditions = [{ field: "", comparison: "is", value: "" }];
 	export let fields;
-	export let toggleable;
+	export let toggleable = null;
+	export let value = null;
 
 	let elementRef;
 
-	const showToggle = typeof toggleable !== 'undefined';
+	const showToggle = typeof toggleable !== 'undefined' && toggleable !== null;
 
-	// Convert the "id:label,id:label,..." input into actual objects.
-	const splitFields = fields?.length > 0 ? JSON.parse(fields) : '';
+	// Parse the field data from JSON string.
+	const parsedFields = fields?.length > 0 ? JSON.parse(fields) : '';
 
 	// Add new item.
 	const addCondition = () => {
@@ -47,6 +48,23 @@
 			})
 		);
 	};
+
+	// Fill in initial data if provided.
+	if (typeof value !== 'undefined' && value !== null) {
+		const parsed = JSON.parse(value);
+
+		const {
+			enabled: newEnabled,
+			behavior: newBehavior,
+			logic: newLogic,
+			conditions: newConditions,
+		} = parsed;
+
+		enabled = newEnabled;
+		behavior = newBehavior;
+		logic = newLogic;
+		conditions = newConditions;
+	}
 </script>
 
 <svelte:options tag='conditional-logic-repeater' />
@@ -77,7 +95,7 @@
 			<div class="conditional-logic-repeater__item" part="item">
 				<select bind:value={condition.field} on:change={triggerUpdateCustomEvent} part="item-field-select">
 					{#if fields?.length > 0}
-						{#each splitFields as item, j (j)}
+						{#each parsedFields as item, j (j)}
 							<option value={item.value}>{item.label}</option>
 						{/each}
 					{/if}
@@ -138,14 +156,8 @@
 <style>
 	.conditional-logic-repeater {
 		--rptr-font-family: system-ui, sans-serif;
-		--rptr-accent-color: var(
-			--es-conditional-logic-repeater-accent,
-			#29a3a3
-		);
-		--rptr-input-border-color: var(
-			--es-conditional-logic-repeater-input-border,
-			#8f9c9c
-		);
+		--rptr-accent-color: var(--es-conditional-logic-repeater-accent, #29a3a3);
+		--rptr-input-border-color: var(--es-conditional-logic-repeater-input-border, #8f9c9c);
 		--rptr-font-size: var(--es-conditional-logic-repeater-font-size, 0.9em);
 
 		font-family: system-ui, sans-serif;
