@@ -8,6 +8,13 @@
 	export let value = null;
 	export let autoclear = null;
 
+	const defaultState = {
+		enabled: true,
+		behavior: "show",
+		logic: "and",
+		conditions: [{ field: "", comparison: "is", value: "" }],
+	};
+
 	let elementRef;
 
 	const showToggle = typeof toggleable !== 'undefined' && toggleable !== null;
@@ -62,34 +69,27 @@
 		elementRef.dispatchEvent(new CustomEvent('es-conditional-logic-repeater-update', data));
 	};
 
-	// Fill in initial data if provided and in correct format.
-	if (typeof value !== 'undefined' && value !== null && isJsonString(value)) {
-		const parsed = JSON.parse(value);
-
-		if (!Array.isArray(parsed) && Object.keys(parsed)?.length === 4) {
-			const {
-				enabled: newEnabled,
-				behavior: newBehavior,
-				logic: newLogic,
-				conditions: newConditions,
-			} = parsed;
-
-			enabled = newEnabled;
-			behavior = newBehavior;
-			logic = newLogic;
-			conditions = newConditions;
-		}
-	}
-
 	const onEnabledChange = () => {
 		triggerUpdateCustomEvent();
 
 		if (doAutoClear && !enabled) {
-			conditions = [{ field: "", comparison: "is", value: "" }];
-			behavior = "show";
-			logic = "and";
+			conditions = defaultState.conditions;
+			behavior = defaultState.behavior;
+			logic = defaultState.logic;
 		}
 	};
+
+	// Fill in initial data if provided and in correct format.
+	if (typeof value !== 'undefined' && value !== null && isJsonString(value)) {
+		const parsed = JSON.parse(value);
+
+		if (!Array.isArray(parsed) && Object.keys(parsed)?.length >= 1) {
+			enabled = parsed?.enabled ?? defaultState.enabled;
+			behavior = parsed?.behavior ?? defaultState.behavior;
+			logic = parsed?.logic ?? defaultState.logic;
+			conditions = parsed?.conditions ?? defaultState.conditions;
+		}
+	}
 </script>
 
 <svelte:options tag='conditional-logic-repeater' />
