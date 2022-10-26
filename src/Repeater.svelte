@@ -69,7 +69,9 @@
 		conditions = newConditions;
 	}
 
-	const autoClearIfNeeded = () => {
+	const onEnabledChange = () => {
+		triggerUpdateCustomEvent();
+
 		if (doAutoClear && !enabled) {
 			conditions = [{ field: "", comparison: "is", value: "" }];
 			behavior = "show";
@@ -83,7 +85,7 @@
 <div class="conditional-logic-repeater" bind:this={elementRef} part="container">
 	{#if showToggle}
 		<label part="use-toggle-label">
-			<input type="checkbox" bind:checked={enabled} on:change={autoClearIfNeeded} part="use-toggle-checkbox {enabled ? 'use-toggle-checkbox-enabled' : ''}" />
+			<input type="checkbox" bind:checked={enabled} on:change={onEnabledChange} part="use-toggle-checkbox {enabled ? 'use-toggle-checkbox-enabled' : ''}" />
 			Use conditional logic
 		</label>
 	{/if}
