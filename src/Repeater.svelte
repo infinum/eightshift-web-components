@@ -14,6 +14,16 @@
 
 	const doAutoClear = showToggle && typeof autoclear !== 'undefined' && autoclear !== null;
 
+	const isJsonString = (input) => {
+		try {
+			JSON.parse(input);
+		} catch (error) {
+			return false;
+		}
+
+		return true;
+	};
+
 	// Parse the field data from JSON string.
 	const parsedFields = fields?.length > 0 ? JSON.parse(fields) : '';
 
@@ -53,7 +63,7 @@
 	};
 
 	// Fill in initial data if provided and in correct format.
-	if (typeof value !== 'undefined' && value !== null) {
+	if (typeof value !== 'undefined' && value !== null && isJsonString(value)) {
 		const parsed = JSON.parse(value);
 
 		if (!Array.isArray(parsed) && Object.keys(parsed)?.length === 4) {
