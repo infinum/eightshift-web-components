@@ -35,6 +35,30 @@ You can also provide a `class`, `id` or other `data-` attributes, just as with o
   	]
   }
   ```
+  - **`behaviors`** - if provided, overrides the default behaviors (show / hide); in the format of:
+  ```json
+  {
+  	"demo": "Demonstrate",
+  	"show": "Show",
+  	"hide": "Hide"
+  }
+  ```
+  - **`logics`** - if provided, overrides the default logic options (all / any); in the format of:
+  ```json
+  {
+  	"some": "some",
+  	"all": "all"
+  }
+  ```
+  (lowercase labels are recommended to better fit into the _sentence_ format)
+  - **`comparisons`** - if provided, overrides the default comparison options (is / is not / ...); in the format of:
+  ```json
+  {
+  	"matches": "matches",
+  	"nomatch": "does not match"
+  }
+  ```
+  (lowercase labels are recommended to better fit into the _sentence_ format)
 
 ### Gettable props
 
