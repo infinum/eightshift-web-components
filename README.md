@@ -18,7 +18,24 @@ You can also provide a `class`, `id` or other `data-` attributes, just as with o
 ### Settable props
 
 - **`fields`** - fields that are shown in the dropdown menu, should be provided as a JSON string (array of objects with label & value keys)
-- **`toggleable`** - if provided, enables the *Use conditional logic* toggle
+- **`toggleable`** - if set, enables the *Use conditional logic* toggle
+- **`autoclear`** - if set, and the *Use conditional logic* toggle is disabled, the conditions get cleared
+- **`value`** - if provided, sets the default value for the repeater
+  format should be:
+  ```json
+  {
+  	"enabled": true,
+  	"behavior": "show",
+  	"logic": "and",
+  	"conditions": [
+  		{
+  			"field": "email",
+  			"comparison": "isnot",
+  			"value": "test@email.com"
+  		}
+  	]
+  }
+  ```
 
 ### Gettable props
 
