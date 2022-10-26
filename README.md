@@ -20,8 +20,7 @@ You can also provide a `class`, `id` or other `data-` attributes, just as with o
 - **`fields`** - fields that are shown in the dropdown menu, should be provided as a JSON string (array of objects with label & value keys)
 - **`toggleable`** - if set, enables the *Use conditional logic* toggle
 - **`autoclear`** - if set, and the *Use conditional logic* toggle is disabled, the conditions get cleared
-- **`value`** - if provided, sets the default value for the repeater
-  format should be:
+- **`value`** - if provided, sets the default value for the repeater, in the format of
   ```json
   {
   	"enabled": true,
@@ -39,8 +38,7 @@ You can also provide a `class`, `id` or other `data-` attributes, just as with o
 
 ### Gettable props
 
-- **`conditions`** - all the conditions the user has set,
-  in the format of
+- **`conditions`** - all the conditions the user has set, in the format of
   ```js
   [
     { field: "", comparison: "is", value: "" },
