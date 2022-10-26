@@ -1,26 +1,4 @@
 <script>
-	export let enabled = true;
-	export let behavior = "show";
-	export let logic = "and";
-	export let conditions = [{ field: "", comparison: "is", value: "" }];
-	export let fields;
-	export let toggleable = null;
-	export let value = null;
-	export let autoclear = null;
-
-	const defaultState = {
-		enabled: true,
-		behavior: "show",
-		logic: "and",
-		conditions: [{ field: "", comparison: "is", value: "" }],
-	};
-
-	let elementRef;
-
-	const showToggle = typeof toggleable !== 'undefined' && toggleable !== null;
-
-	const doAutoClear = showToggle && typeof autoclear !== 'undefined' && autoclear !== null;
-
 	const isJsonString = (input) => {
 		try {
 			JSON.parse(input);
@@ -30,6 +8,57 @@
 
 		return true;
 	};
+
+	export let behaviors = null;
+	export let logics = null;
+	export let comparisons = null;
+
+	const defaultBehaviors = {
+		show: 'Show',
+		hide: 'Hide',
+	};
+
+	const defaultLogics = {
+		all: 'all',
+		any: 'any',
+	};
+
+	const defaultComparisons = {
+		is: 'is',
+		isn: 'is not',
+		gt: 'greater than',
+		gte: 'greater than or equal',
+		lt: 'less than',
+		lte: 'less than or equal',
+		c: 'contains',
+		sw: 'starts with',
+		ew: 'ends with',
+	};
+
+	const behaviorOptions = typeof behaviors !== 'undefined' && behaviors !== null && isJsonString(behaviors) ? JSON.parse(behaviors) : defaultBehaviors;
+	const logicOptions = typeof logics !== 'undefined' && logics !== null && isJsonString(logics) ? JSON.parse(logics) : defaultLogics;
+	const comparisonOptions = typeof comparisons !== 'undefined' && comparisons !== null && isJsonString(comparisons) ? JSON.parse(comparisons) : defaultComparisons;
+
+	const defaultState = {
+		enabled: true,
+		behavior: Object.keys(behaviorOptions)[0],
+		logic: Object.keys(logicOptions)[0],
+		conditions: [{ field: "", comparison: Object.keys(comparisonOptions)[0], value: "" }],
+	};
+
+	export let enabled = defaultState.enabled;
+	export let behavior = defaultState.behavior;
+	export let logic = defaultState.logic;
+	export let conditions = defaultState.conditions;
+	export let fields;
+	export let toggleable = null;
+	export let value = null;
+	export let autoclear = null;
+
+	let elementRef;
+
+	const showToggle = typeof toggleable !== 'undefined' && toggleable !== null;
+	const doAutoClear = showToggle && typeof autoclear !== 'undefined' && autoclear !== null;
 
 	// Parse the field data from JSON string.
 	const parsedFields = fields?.length > 0 && isJsonString(fields) ? JSON.parse(fields) : '';
@@ -105,13 +134,15 @@
 	{#if enabled || !showToggle}
 		<div class="conditional-logic-repeater__item" part="header">
 			<select bind:value={behavior} on:change={triggerUpdateCustomEvent} part="header-behavior-select">
-				<option value="show">Show</option>
-				<option value="hide">Hide</option>
+				{#each Object.entries(behaviorOptions) as [value, label], j (j)}
+					<option value={value}>{label}</option>
+				{/each}
 			</select>
 			this field if
 			<select bind:value={logic} on:change={triggerUpdateCustomEvent} part="header-logic-select">
-				<option value="and">all</option>
-				<option value="or">any</option>
+				{#each Object.entries(logicOptions) as [value, label], j (j)}
+					<option value={value}>{label}</option>
+				{/each}
 			</select>
 			of the following match:
 		</div>
@@ -127,13 +158,9 @@
 				</select>
 
 				<select bind:value={condition.comparison} on:change={triggerUpdateCustomEvent} part="item-comparison-select">
-					<option value="is">is</option>
-					<option value="isnot">is not</option>
-					<option value="gt">greater than</option>
-					<option value="lt">less than</option>
-					<option value="contains">contains</option>
-					<option value="startsWith">starts with</option>
-					<option value="endsWith">ends with</option>
+					{#each Object.entries(comparisonOptions) as [value, label], j (j)}
+						<option value={value}>{label}</option>
+					{/each}
 				</select>
 
 				<input type="text" bind:value={condition.value} on:change={triggerUpdateCustomEvent} part="item-value-input" />
