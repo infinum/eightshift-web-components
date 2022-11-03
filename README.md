@@ -137,6 +137,8 @@ If you want to change any part of the component visually, you can tweak stuff wi
 - `add-condition-button` - the _Add condition_ (+) button
 - `remove-condition-button` - the _Remove condition_ (-) button
 
+- `clear-button` - the _Clear_ button
+
 Example of using parts:
 ```scss
 // All repeaters
@@ -154,6 +156,9 @@ CSS variables used:
 - `--es-conditional-logic-repeater-accent` - checkbox accent color
 - `--es-conditional-logic-repeater-input-border` - text input fields and `<select>`s border colors
 - `--es-conditional-logic-repeater-font-size` - font size for the component
+- `--es-conditional-logic-repeater-width` - component total width (`max-width` is the default)
+
+- `--es-conditional-logic-repeater-focus-outline-overlay-color` - color that overlays the accent color to fade out the focus outline (70% white is the default)
 
 ## Setup
 
