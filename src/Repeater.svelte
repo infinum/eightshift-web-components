@@ -49,7 +49,7 @@
 	export let enabled = defaultState.enabled;
 	export let behavior = defaultState.behavior;
 	export let logic = defaultState.logic;
-	export let conditions = defaultState.conditions;
+	export let conditions = structuredClone(defaultState.conditions);
 	export let fields;
 	export let toggleable = null;
 	export let value = null;
@@ -102,11 +102,20 @@
 		triggerUpdateCustomEvent();
 
 		if (doAutoClear && !enabled) {
-			conditions = defaultState.conditions;
+			conditions = structuredClone(defaultState.conditions);
 			behavior = defaultState.behavior;
 			logic = defaultState.logic;
 		}
 	};
+
+	const resetData = () => {
+		conditions = [];
+		conditions = structuredClone(defaultState.conditions);
+		behavior = defaultState.behavior;
+		logic = defaultState.logic;
+
+		triggerUpdateCustomEvent();
+	}
 
 	// Fill in initial data if provided and in correct format.
 	if (typeof value !== 'undefined' && value !== null && isJsonString(value)) {
@@ -116,9 +125,11 @@
 			enabled = parsed?.enabled ?? defaultState.enabled;
 			behavior = parsed?.behavior ?? defaultState.behavior;
 			logic = parsed?.logic ?? defaultState.logic;
-			conditions = parsed?.conditions ?? defaultState.conditions;
+			conditions = parsed?.conditions ?? structuredClone(defaultState.conditions);
 		}
 	}
+
+	$: isClearable = conditions.length > 1 || (conditions.length === 1 && (conditions[0]?.field?.length > 0 || conditions[0]?.value?.length > 0));
 </script>
 
 <svelte:options tag='conditional-logic-repeater' />
@@ -165,7 +176,7 @@
 
 				<input type="text" bind:value={condition.value} on:change={triggerUpdateCustomEvent} part="item-value-input" />
 
-				<button on:click={addCondition} part="add-condition-button">
+				<button class="icon-button" on:click={addCondition} part="add-condition-button">
 					<svg
 						width="20"
 						height="20"
@@ -183,7 +194,7 @@
 				</button>
 
 				{#if i > 0}
-					<button on:click={() => removeCondition(i)} part="remove-condition-button">
+					<button class="icon-button" on:click={() => removeCondition(i)} part="remove-condition-button">
 						<svg
 							width="20"
 							height="20"
@@ -202,6 +213,8 @@
 				{/if}
 			</div>
 		{/each}
+
+		<button class="button" on:click={resetData} disabled={!isClearable} part="clear-button">Clear</button>
 	{/if}
 </div>
 
@@ -218,6 +231,8 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
+
+		width: var(--es-conditional-logic-repeater-width, max-content);
 	}
 
 	.conditional-logic-repeater,
@@ -225,7 +240,7 @@
 		box-sizing: border-box;
 	}
 
-	button {
+	.icon-button {
 		padding: 0.25rem;
 		border: 0;
 		margin: 0;
@@ -244,9 +259,11 @@
 		justify-content: center;
 
 		cursor: pointer;
+
+		transition: box-shadow 0.3s ease-out;
 	}
 
-	button svg {
+	.icon-button svg {
 		width: 1rem;
 		height: 1rem;
 	}
@@ -265,6 +282,8 @@
 		padding: 0.5rem;
 		outline-color: var(--es-conditional-logic-repeater-accent);
 		accent-color: var(--es-conditional-logic-repeater-accent);
+
+		transition: box-shadow 0.3s ease-out;
 	}
 
 	label,
@@ -280,5 +299,67 @@
 
 	.conditional-logic-repeater__item {
 		gap: 0.75rem;
+	}
+
+	.button {
+		padding: 0.5rem 1rem;
+		border: 0;
+		margin: 0;
+
+		background-color: transparent;
+		color: var(--rptr-accent-color);
+
+		border: 1px solid var(--rptr-accent-color);
+		border-radius: 0.25rem;
+
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+
+		cursor: pointer;
+
+		font-weight: 500;
+
+		margin-left: auto;
+
+		transition: box-shadow 0.3s ease-out;
+	}
+
+	.button:not(:disabled):hover {
+		box-shadow: 0 0 0 1px var(--rptr-accent-color);
+	}
+
+	.button:disabled {
+		border-color: var(--rptr-input-border-color);
+		color: var(--rptr-input-border-color);
+		cursor: not-allowed;
+	}
+
+	@supports selector(:focus-visible) {
+		.icon-button:focus,
+		input[type="text"]:focus,
+		select:focus,
+		.button:focus {
+			outline: none;
+		}
+
+		.icon-button:not(:disabled):focus:focus-visible,
+		input[type="text"]:not(:disabled):focus:focus-visible,
+		select:not(:disabled):focus:focus-visible,
+		.button:not(:disabled):focus:focus-visible {
+			border-color: var(--rptr-accent-color);
+			box-shadow: 0 0 0 3px var(--es-conditional-logic-repeater-focus-outline-overlay-color, rgb(255 255 255 / 0.7)), 0 0 0 3px var(--rptr-accent-color);
+		}
+	}
+
+	@supports not selector(:focus-visible) {
+		.icon-button:not(:disabled):focus,
+		input[type="text"]:not(:disabled):focus,
+		select:not(:disabled):focus,
+		.button:not(:disabled):focus {
+			border-color: var(--rptr-accent-color);
+			outline: none;
+			box-shadow: 0 0 0 3px var(--es-conditional-logic-repeater-focus-outline-overlay-color, rgb(255 255 255 / 0.7)), 0 0 0 3px var(--rptr-accent-color);
+		}
 	}
 </style>
