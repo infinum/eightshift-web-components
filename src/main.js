@@ -1,1 +1,1 @@
-export * from './Repeater.svelte';
+export * from './conditional-logic-repeater.svelte';
