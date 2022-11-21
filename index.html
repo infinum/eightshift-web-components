@@ -4,89 +4,17 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Conditional logic repeater</title>
+	<title>Eightshift Web Components</title>
 </head>
 
 <body>
-	<h1>Conditional logic repeater demo</h1>
+	<h1>Eightshift Web Components</h1>
 
-	<h2>Default repeater</h2>
-
-	<conditional-logic-repeater class="demo-repeater" fields='[{"label":"Rich text-0","value":"rich-text-0"},{"label":"First name","value":"firstname"},{"label":"Last name","value":"lastname"},{"label":"Email","value":"email"},{"label":"Phone","value":"mobilephone"},{"label":"Rich text-4","value":"rich-text-4"},{"label":"What do you want to achieve?","value":"hs_persona"},{"label":"What services do you need?","value":"scope_of_services"},{"label":"What is your budget?","value":"rfq_project_budget"},{"label":"Tell us about your project","value":"project_about"},{"label":"Attach any files you feel would be useful test","value":"rfq_attachment"},{"label":"accepted_newsletter_subscription","value":"accepted_newsletter_subscription"},{"label":"utm_campaign","value":"utm_campaign"},{"label":"Label","value":"utm_content"},{"label":"Utm Source","value":"utm_source"}]'></conditional-logic-repeater>
-
-	<button id="trigger">Get data</button>
-
-	<h2>Toggleable repeater</h2>
-
-	<conditional-logic-repeater toggleable fields='[{"label":"Name","value":"name"},{"label":"E-mail","value":"email"},{"label":"Date of birth","value":"dob"}]'></conditional-logic-repeater>
-
-	<h2>Toggleable repeater with auto-clear</h2>
-
-	<conditional-logic-repeater toggleable autoclear fields='[{"label":"Name","value":"name"},{"label":"E-mail","value":"email"},{"label":"Date of birth","value":"dob"}]'></conditional-logic-repeater>
-
-	<h2>Repeater with default value set</h2>
-
-	<conditional-logic-repeater value='{"enabled":true,"behavior":"show","logic":"and","conditions":[{"field":"email","comparison":"isnot","value":"test@email.com"}]}' fields='[{"label":"Name","value":"name"},{"label":"E-mail","value":"email"},{"label":"Date of birth","value":"dob"}]'></conditional-logic-repeater>
-
-	<h2>Repeater with custom behaviors</h2>
-
-	<conditional-logic-repeater behaviors='{"demo":"Demonstrate","show":"Show","hide":"Hide"}' fields='[{"label":"Name","value":"name"},{"label":"E-mail","value":"email"},{"label":"Date of birth","value":"dob"}]'></conditional-logic-repeater>
-
-	<h2>Repeater with custom logic options</h2>
-
-	<conditional-logic-repeater logics='{"some":"some","all":"all","any":"any"}' fields='[{"label":"Name","value":"name"},{"label":"E-mail","value":"email"},{"label":"Date of birth","value":"dob"}]'></conditional-logic-repeater>
-
-	<h2>Repeater with custom comparison options</h2>
-
-	<conditional-logic-repeater comparisons='{"matches":"matches","nomatch":"does not match"}' fields='[{"label":"Name","value":"name"},{"label":"E-mail","value":"email"},{"label":"Date of birth","value":"dob"}]'></conditional-logic-repeater>
-
-	<script type="module" src="/src/main.js"></script>
-
-	<script>
-		const button = document.querySelector('#trigger');
-		const repeaterElement = document.querySelector('conditional-logic-repeater');
-		const repeaterElements = document.querySelectorAll('conditional-logic-repeater');
-
-		button.addEventListener('click', () => {
-			if (repeaterElement.enabled) {
-				console.log({
-					enabled: repeaterElement.enabled,
-					behavior: repeaterElement.behavior,
-					logic: repeaterElement.logic,
-					conditions: repeaterElement.conditions,
-				});
-			} else {
-				console.log('Repeater is disabled');
-			}
-		});
-
-		repeaterElements.forEach((el) => {
-			el.addEventListener('es-conditional-logic-repeater-update', (e) => {
-				const prevSibling = el?.previousElementSibling;
-
-				if (prevSibling && prevSibling.tagName.toLowerCase() === 'h2') {
-					console.log(prevSibling.innerHTML);
-				}
-
-				console.log(e.detail);
-			});
-		});
-	</script>
-
-	<style>
-		body {
-			font-family: system-ui, sans-serif;
-		}
-
-		button {
-			margin-top: 2rem;
-		}
-
-		h2 {
-			margin-top: 2rem;
-			font-weight: 500;
-		}
-	</style>
+	<ul>
+		<li>
+			<a href="./src/conditionalLogicRepeater/index.html">conditionalLogicRepeater</a>
+		</li>
+	</ul>
 </body>
 
 </html>
