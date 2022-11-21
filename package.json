@@ -1,6 +1,6 @@
 {
 	"name": "@eightshift/web-components",
-	"version": "1.1.0",
+	"version": "1.2.0",
 	"description": "A collection of useful web components. Powered by Eightshift",
 	"author": "Eightshift team <team@eightshift.com> (https://eightshift.com/)",
 	"repository": {
